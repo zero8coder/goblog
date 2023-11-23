@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"strings"
 )
 
 func defaultHandler(w http.ResponseWriter, r *http.Request) {
@@ -28,5 +29,20 @@ func main() {
 	router := http.NewServeMux()
 	router.HandleFunc("/", defaultHandler)
 	router.HandleFunc("/about", aboutHandler)
+	// 文章详情
+	router.HandleFunc("/articles/", func(w http.ResponseWriter, r *http.Request) {
+		id := strings.SplitN(r.URL.Path, "/", 3)[2]
+		fmt.Fprint(w, "文章 ID："+id)
+	})
+	// 列表 or 创建
+	router.HandleFunc("/articles", func(w http.ResponseWriter, r *http.Request) {
+		switch r.Method {
+		case "GET":
+			fmt.Fprint(w, "访问文章列表")
+		case "POST":
+			fmt.Fprint(w, "创建新的文章")
+		}
+	})
+
 	http.ListenAndServe(":3000", router)
 }
