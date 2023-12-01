@@ -52,7 +52,11 @@ func forceHTMLMiddleware(next http.Handler) http.Handler {
 
 func removeTrailingSlash(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		r.URL.Path = strings.TrimSuffix(r.URL.Path, "/")
+		// 1. 除首页以外，移除所有请求路径后面的斜杆
+		if r.URL.Path != "/" {
+			r.URL.Path = strings.TrimSuffix(r.URL.Path, "/")
+		}
+		// 2. 将请求传递下去
 		next.ServeHTTP(w, r)
 	})
 }
