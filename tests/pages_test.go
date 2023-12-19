@@ -23,7 +23,7 @@ func TestHomePage(t *testing.T) {
 	assert.Equal(t, 200, resp.StatusCode, "应返回状态码 200")
 }
 
-func TestAboutPage(t *testing.T) {
+func TestAllPage(t *testing.T) {
 	baseURL := "http://localhost:3000"
 	// 1. 声明加初始化测试数据
 	var tests = []struct {
